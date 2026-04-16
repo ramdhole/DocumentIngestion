@@ -22,30 +22,31 @@ public class FileWatcherServiceImpl implements FileWatcherService {
 	private String sourceDir;
 
 	@Autowired
-	FileTransferService ingestionService;
+	FileTransferService fileTransferService;
 
 	@Autowired
 	FileProcessorService fileProcessorService;
 
 	@PostConstruct
 	public void startWatching() {
+		System.out.println("Watcher service started!!!!!");
 		new Thread(this::watchDirectory).start();
 	}
 
-	@PostConstruct
-	public void processExistingFiles() {
-		try {
-			Path dir = Paths.get(sourceDir);
-
-			Files.list(dir).filter(Files::isRegularFile).forEach(file -> {
-				System.out.println("Processing existing file: " + file.getFileName());
-				ingestionService.trasferFile(file.getFileName().toString());
-			});
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+//	@PostConstruct
+//	public void processExistingFiles() {
+//		try {
+//			Path dir = Paths.get(sourceDir);
+//
+//			Files.list(dir).filter(Files::isRegularFile).forEach(file -> {
+//				System.out.println("Processing existing file: " + file.getFileName());
+//				fileTransferService.trasferFile(file.getFileName().toString());
+//			});
+//
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//	}
 
 	@Override
 	public void watchDirectory() {
@@ -72,7 +73,7 @@ public class FileWatcherServiceImpl implements FileWatcherService {
 							Path fullPath = Paths.get(sourceDir, fileName.toString());
 							
 							if (isFileReady(fullPath)) {
-//								ingestionService.trasferFile(fileName.toString());
+//								fileTransferService.trasferFile(fileName.toString());
 								fileProcessorService.processXml(fileName.toString());
 							} else {
 								System.out.println("XML not ready yet: " + fileName);
