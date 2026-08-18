@@ -15,13 +15,15 @@ public class IngestionCtrl {
 	@Autowired
 	FileTransferService ingestionService;
 	
-//	@GetMapping("/transfer/{fileName}")
+//	@GetMapping("/transfer/{fileName}") test
+
 //	public String transferFile(@PathVariable String fileName) {
 //		return ingestionService.trasferFile(fileName);
 //	}
 	
 	@GetMapping("/hello")
 	public String sayHello() {
+		System.out.println("Hallo");
 		return "Hello";
 	}
 	
